@@ -1,0 +1,11 @@
+---
+import FormattedDate from './FormattedDate.astro';
+const { post } = Astro.props;
+const { data } = post;
+---
+<a class="post-card" href={`/blog/${post.id.replace(/\.md$/, '')}/`}>
+  <div class="post-meta"><span class="tag category">{data.category}</span></div>
+  <h3>{data.title}</h3>
+  <p>{data.description}</p>
+  <div class="post-card-foot"><FormattedDate date={data.pubDate} /></div>
+</a>

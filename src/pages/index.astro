@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const recent = posts.slice(0, 6);
+
+const categories = [
+  { key: 'AI DC Scale-out', label: 'AI DC Scale-out 网络', desc: '智算数据中心训练/推理集群的 scale-out 组网、集合通信与 RoCE/IB 选型。' },
+  { key: 'AI DCI/Scale-across', label: 'AI DCI / Scale-across', desc: '跨数据中心、跨地域的 AI 算力互联与长距无损传输。' },
+  { key: 'AI Security', label: 'AI 安全', desc: '模型与基础设施安全、对抗样本、数据隐私与合规。' },
+  { key: 'Internet New Tech', label: '互联网行业新技术', desc: '互联网厂商在网络与基础设施上的新架构、新协议、新实践。' },
+  { key: 'Operator New Tech', label: '运营商行业新技术', desc: '运营商在 5G-A / 算力网络 / 全光底座上的演进与商用。' },
+];
+---
+<BaseLayout>
+  <section class="hero">
+    <h1>AI时代的水管工</h1>
+    <p>让数据在 AI 时代自由流动 —— 网络行业新技术、解决方案与产品观察</p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">最新文章</h2>
+    {
+      recent.length > 0 ? (
+        <div class="post-grid">
+          {recent.map((p) => <PostCard post={p} />)}
+        </div>
+      ) : (
+        <p style="color:var(--text-soft)">还没有发布文章，敬请期待。</p>
+      )
+    }
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">关注方向</h2>
+    <div class="post-grid">
+      {
+        categories.map((c) => (
+          <a class="post-card" href={`/blog?cat=${encodeURIComponent(c.key)}`}>
+            <h3>{c.label}</h3>
+            <p>{c.desc}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

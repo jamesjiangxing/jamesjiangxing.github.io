@@ -1,0 +1,28 @@
+---
+const nav = [
+  { href: '/', label: '首页' },
+  { href: '/blog', label: '博客' },
+  { href: '/about', label: '关于' },
+];
+const path = Astro.url.pathname;
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">⌁</span>
+      <span class="brand-text">AI时代的水管工</span>
+    </a>
+    <nav class="nav">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={['nav-link', { active: path === item.href }]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
